@@ -33,7 +33,7 @@ public class ListActivity extends AppCompatActivity {
             return insets;
         });
         //ArrayList<User> list = new ArrayList<User>();
-        dbHandler db = new dbHandler(this, null,null,1);
+        DatabaseHandler db = new DatabaseHandler(this, null,null,1);
 
 
 
