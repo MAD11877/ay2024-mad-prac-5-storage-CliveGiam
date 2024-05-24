@@ -39,30 +39,36 @@ public class MainActivity extends AppCompatActivity {
         Intent receive = getIntent();
         String name = receive.getStringExtra("Name");
         String desc = receive.getStringExtra("Description");
+        int id = receive.getIntExtra("Id", 1);
+        user.setId(id);
+        Toast.makeText(getApplicationContext(), String.valueOf(id), Toast.LENGTH_LONG).show();
 
 
         tvName.setText(name);
         tvDescription.setText(desc);
 
         Bundle tempUser = new Bundle();
+        DatabaseHandler dbHandler = new DatabaseHandler(this, null, null, 1);
         btnFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 user.followed = !(user.followed);
+                User updatedUser = new User(user.getName(),user.getDescription(), user.getId(), user.getFollowed());
                 Intent sendFollow = new Intent("User_follow");
                 if(user.followed) {
                     btnFollow.setText("Unfollow");
                     tempUser.putBoolean("Followed", true);
+                    updatedUser.setFollowed(true);
                     Toast.makeText(getApplicationContext(), "Followed", Toast.LENGTH_LONG).show();
                 }
                 else {
                     btnFollow.setText("Follow");
                     tempUser.putBoolean("Followed", false);
+                    updatedUser.setFollowed(false);
                     Toast.makeText(getApplicationContext(), "Unfollowed", Toast.LENGTH_LONG).show();
                 }
+                dbHandler.updateUser(updatedUser);
                 sendBroadcast(sendFollow);
-
-
             }
         });
 

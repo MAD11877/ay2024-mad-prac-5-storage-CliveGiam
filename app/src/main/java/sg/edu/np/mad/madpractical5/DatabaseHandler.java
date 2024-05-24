@@ -77,15 +77,18 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
     public void updateUser(User user) {
         ContentValues values = new ContentValues();
+
+        int id = user.getId();
         int follow = 0;
         if (user.getFollowed()) { follow = 1; };
         values.put(COLUMN_FOLLOWED, follow);
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.update(TABLE_USERS, values, "id=String.valueOf(user.getId()))", null); //Fix later
-
+        db.update(TABLE_USERS, values, "id=" + id, null);
         db.close();
     }
+
+
 
 
 }

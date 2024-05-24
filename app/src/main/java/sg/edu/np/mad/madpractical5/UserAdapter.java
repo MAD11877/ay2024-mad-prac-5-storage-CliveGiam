@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
     public void onBindViewHolder(UserViewHolder holder, int position) {
         User temp = userlist.get(position);
+        int tempid = holder.getAdapterPosition() + 1;
         String tempName = temp.getName();
         holder.name.setText(tempName);
         holder.desc.setText(temp.getDescription());
@@ -55,7 +57,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
                         Bundle info = new Bundle();
                         info.putString("Name",temp.getName());
                         info.putString("Description",temp.description);
-                        info.putInt("Id",temp.getId());
+                        info.putInt("Id", tempid);
                         info.putBoolean("Followed",temp.getFollowed());
                         activity.putExtras(info);
                         environment.startActivity(activity);
@@ -74,6 +76,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
                 BroadcastReceiver followListener = new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
+
                         if (intent.getAction().equals("User_follow")) {
                             boolean replace = intent.getBooleanExtra("Followed", false);
                             for(User x : userlist) {
